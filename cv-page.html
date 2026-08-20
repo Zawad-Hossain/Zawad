@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alex Kestrel — Physical Chemistry Researcher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#ECEEE9;
+    --paper-raised:#F5F6F2;
+    --ink:#16202A;
+    --ink-soft:#4A5A66;
+    --ink-faint:#8996A0;
+    --rule:#C9D2D1;
+    --amber:#F5A623;
+    --crimson:#D64550;
+    --teal:#2FB6B2;
+    --violet:#7C5CBF;
+    --sidebar-w:300px;
+    --serif:'Spectral', Georgia, serif;
+    --mono:'IBM Plex Mono', monospace;
+    --sans:'IBM Plex Sans', -apple-system, sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.6;
+  }
+  a{color:inherit;}
+  ::selection{background:var(--amber); color:var(--ink);}
+
+  .shell{
+    display:grid;
+    grid-template-columns:var(--sidebar-w) 1fr;
+    min-height:100vh;
+  }
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    position:sticky;
+    top:0;
+    height:100vh;
+    border-right:1px solid var(--rule);
+    padding:2.75rem 2rem;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .sidebar h1{
+    font-family:var(--serif);
+    font-size:1.6rem;
+    font-weight:600;
+    line-height:1.2;
+    margin-bottom:0.3rem;
+  }
+  .sidebar .role{
+    font-size:0.86rem;
+    color:var(--ink-soft);
+    margin-bottom:1.5rem;
+    line-height:1.5;
+  }
+
+  /* Passport-ratio photo (35:45mm ≈ 0.78), sized large under the name */
+  .photo{
+    width:200px;
+    aspect-ratio:35 / 45;
+    border-radius:2px;
+    background:var(--paper-raised);
+    border:1px solid var(--rule);
+    margin-bottom:1.75rem;
+    position:relative;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+  .photo::after{
+    content:'';
+    position:absolute; inset:0;
+    background:
+      linear-gradient(135deg, transparent 48%, var(--rule) 48%, var(--rule) 52%, transparent 52%);
+    opacity:0.6;
+  }
+  .photo .initials{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--serif);
+    font-size:3.4rem;
+    color:var(--ink-faint);
+  }
+  .photo img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  .contact-list{
+    display:flex;
+    flex-direction:column;
+    gap:0.45rem;
+    font-family:var(--mono);
+    font-size:0.76rem;
+    color:var(--ink-soft);
+    margin-bottom:2.25rem;
+    padding-bottom:2.25rem;
+    border-bottom:1px solid var(--rule);
+  }
+  .contact-list a{
+    text-decoration:none;
+    border-bottom:1px solid transparent;
+    transition:border-color 0.2s ease, color 0.2s ease;
+  }
+  .contact-list a:hover{color:var(--ink); border-color:var(--ink);}
+
+  /* Tab nav styled as spectral lines, consistent with lab site language */
+  .tabnav{
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    flex:1;
+  }
+  .tabnav button{
+    all:unset;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:0.85rem;
+    padding:0.85rem 0;
+    padding-left:0.9rem;
+    margin-left:-0.9rem;
+    border-left:3px solid transparent;
+    font-family:var(--mono);
+    font-size:0.8rem;
+    letter-spacing:0.02em;
+    color:var(--ink-soft);
+    transition:color 0.2s ease, border-color 0.2s ease;
+  }
+  .tabnav button .tick{
+    width:2px; height:20px;
+    background:var(--rule);
+    flex-shrink:0;
+    transition:background 0.2s ease, height 0.2s ease;
+  }
+  .tabnav button:hover{color:var(--ink);}
+  .tabnav button[aria-selected="true"]{color:var(--ink);}
+  .tabnav button[aria-selected="true"]{border-left-color:var(--tab-color, var(--amber));}
+  .tabnav button[aria-selected="true"] .tick{background:var(--tab-color, var(--amber)); height:28px;}
+
+  .sidebar-foot{
+    font-family:var(--mono);
+    font-size:0.68rem;
+    color:var(--ink-faint);
+    padding-top:1.5rem;
+    border-top:1px solid var(--rule);
+    line-height:1.7;
+  }
+
+  /* ---------- MAIN CONTENT ---------- */
+  main{
+    padding:3.5rem clamp(1.5rem, 5vw, 4.5rem) 5rem;
+    min-width:0;
+  }
+
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block; animation:fade 0.35s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    display:flex;
+    align-items:center;
+    gap:0.6rem;
+    margin-bottom:0.9rem;
+  }
+  .eyebrow::before{content:''; width:14px; height:2px; background:var(--line-color, var(--ink-faint));}
+
+  h2{
+    font-family:var(--serif);
+    font-size:clamp(1.5rem, 2.6vw, 1.9rem);
+    font-weight:600;
+    margin-bottom:0.4rem;
+  }
+  .panel-sub{
+    color:var(--ink-faint);
+    font-size:0.9rem;
+    max-width:44ch;
+    margin-bottom:2.5rem;
+  }
+
+  .block{margin-bottom:3.25rem;}
+  .block:last-child{margin-bottom:0;}
+  .block-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:1.25rem;
+    border-bottom:1px solid var(--rule);
+    padding-bottom:0.6rem;
+  }
+  .block-head h3{
+    font-family:var(--serif);
+    font-size:1.15rem;
+    font-weight:600;
+  }
+  .block-head .count{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:var(--ink-faint);
+  }
+
+  /* --- Overview: updates --- */
+  .update-row{
+    display:grid;
+    grid-template-columns:100px 1fr;
+    gap:1.5rem;
+    padding:1rem 0;
+    border-top:1px solid var(--rule);
+  }
+  .update-row:last-child{border-bottom:1px solid var(--rule);}
+  .update-date{font-family:var(--mono); font-size:0.76rem; color:var(--ink-faint); padding-top:0.15rem;}
+  .update-row p{color:var(--ink-soft); font-size:0.93rem;}
+  .tag{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:0.64rem;
+    letter-spacing:0.07em;
+    text-transform:uppercase;
+    padding:0.14rem 0.45rem;
+    border:1px solid var(--rule);
+    border-radius:2px;
+    color:var(--ink-soft);
+    margin-right:0.55rem;
+  }
+
+  /* --- Overview: skills --- */
+  .skills-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:1.75rem 2.5rem;
+  }
+  .skill-group h4{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin-bottom:0.75rem;
+  }
+  .skill-bar{margin-bottom:0.65rem;}
+  .skill-bar .label{
+    display:flex; justify-content:space-between;
+    font-size:0.85rem; color:var(--ink); margin-bottom:0.3rem;
+  }
+  .skill-bar .track{
+    height:4px; background:var(--rule); border-radius:2px; overflow:hidden;
+  }
+  .skill-bar .fill{
+    height:100%; border-radius:2px;
+    background:var(--fill-color, var(--teal));
+  }
+
+  /* --- Overview: publications (compact) --- */
+  .pub-compact{
+    padding:0.9rem 0;
+    border-top:1px solid var(--rule);
+  }
+  .pub-compact:last-child{border-bottom:1px solid var(--rule);}
+  .pub-compact .pt{font-size:0.95rem; font-weight:500; margin-bottom:0.2rem;}
+  .pub-compact .pv{font-family:var(--mono); font-size:0.75rem; color:var(--ink-faint);}
+
+  /* --- CV tab --- */
+  .cv-download{
+    display:inline-flex;
+    align-items:center;
+    gap:0.6rem;
+    font-family:var(--mono);
+    font-size:0.8rem;
+    padding:0.65rem 1.15rem;
+    border:1px solid var(--ink);
+    text-decoration:none;
+    color:var(--ink);
+    margin-bottom:3rem;
+    transition:background 0.2s ease, color 0.2s ease;
+  }
+  .cv-download:hover{background:var(--ink); color:var(--paper);}
+
+  .timeline-item{
+    display:grid;
+    grid-template-columns:150px 1fr;
+    gap:1.5rem;
+    padding:1.25rem 0;
+    border-top:1px solid var(--rule);
+  }
+  .timeline-item:last-child{border-bottom:1px solid var(--rule);}
+  .timeline-item .range{
+    font-family:var(--mono);
+    font-size:0.76rem;
+    color:var(--ink-faint);
+    padding-top:0.2rem;
+  }
+  .timeline-item .role-title{font-weight:600; font-size:1rem; margin-bottom:0.15rem;}
+  .timeline-item .org{
+    font-family:var(--mono); font-size:0.78rem; color:var(--ink-soft); margin-bottom:0.5rem;
+  }
+  .timeline-item p{color:var(--ink-soft); font-size:0.9rem;}
+
+  /* --- Education tab --- */
+  .edu-item{
+    display:grid;
+    grid-template-columns:150px 1fr;
+    gap:1.5rem;
+    padding:1.5rem 0;
+    border-top:1px solid var(--rule);
+  }
+  .edu-item:last-child{border-bottom:1px solid var(--rule);}
+  .edu-item .range{font-family:var(--mono); font-size:0.76rem; color:var(--ink-faint); padding-top:0.2rem;}
+  .edu-item .degree{font-family:var(--serif); font-size:1.15rem; font-weight:600; margin-bottom:0.2rem;}
+  .edu-item .inst{font-size:0.9rem; color:var(--ink-soft); margin-bottom:0.5rem;}
+  .edu-item p{color:var(--ink-faint); font-size:0.86rem;}
+
+  /* --- Gallery tab --- */
+  .gallery-note{font-size:0.85rem; color:var(--ink-faint); margin-bottom:2rem; max-width:50ch;}
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    grid-auto-rows:130px;
+    gap:0.6rem;
+  }
+  .gtile{position:relative; border-radius:3px; overflow:hidden; background:var(--paper-raised); border:1px solid var(--rule);}
+  .gtile svg{width:100%; height:100%; display:block;}
+  .gtile .cap{
+    position:absolute; bottom:0; left:0; right:0;
+    padding:0.5rem 0.6rem;
+    font-family:var(--mono); font-size:0.62rem; color:var(--paper);
+    background:linear-gradient(0deg, rgba(22,32,42,0.78), transparent);
+    opacity:0; transition:opacity 0.2s ease;
+  }
+  .gtile:hover .cap{opacity:1;}
+  .g1{grid-column:span 2; grid-row:span 2;}
+  .g2{grid-column:span 2;}
+  .g3{grid-column:span 1;}
+  .g4{grid-column:span 1;}
+  .g5{grid-column:span 2;}
+  .g6{grid-column:span 2;}
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 860px){
+    .shell{grid-template-columns:1fr;}
+    .sidebar{
+      position:sticky; top:0; height:auto;
+      flex-direction:row; align-items:center;
+      border-right:none; border-bottom:1px solid var(--rule);
+      padding:0.85rem 1.25rem; background:var(--paper); z-index:10;
+      gap:0.85rem;
+    }
+    .sidebar h1{order:2; font-size:1rem; margin-bottom:0;}
+    .photo{order:1; width:44px; aspect-ratio:35/45; margin-bottom:0; flex-shrink:0;}
+    .photo .initials{font-size:1rem;}
+    .sidebar .role, .contact-list, .sidebar-foot{display:none;}
+    .tabnav{order:3;}
+    .tabnav{flex-direction:row; overflow-x:auto; gap:0.25rem; flex:1;}
+    .tabnav button{padding:0.4rem 0.7rem; border-left:none; border-bottom:3px solid transparent; margin-left:0; white-space:nowrap;}
+    .tabnav button .tick{width:14px; height:2px;}
+    .tabnav button[aria-selected="true"]{border-left-color:transparent; border-bottom-color:var(--tab-color, var(--amber));}
+    main{padding:2rem 1.25rem 3rem;}
+    .skills-grid{grid-template-columns:1fr;}
+    .update-row, .timeline-item, .edu-item{grid-template-columns:1fr; gap:0.4rem;}
+    .gallery-grid{grid-template-columns:repeat(2,1fr);}
+    .g1,.g2,.g3,.g4,.g5,.g6{grid-column:span 1; grid-row:span 1;}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <h1>Alex Kestrel</h1>
+    <div class="role">PhD Candidate, Physical Chemistry<br>Placeholder University</div>
+    <!-- Swap the div below for: <div class="photo"><img src="your-photo.jpg" alt="Alex Kestrel"></div> -->
+    <div class="photo"><div class="initials">AK</div></div>
+
+    <div class="contact-list">
+      <a href="mailto:alex.kestrel@placeholder.edu">alex.kestrel@placeholder.edu</a>
+      <a href="#">scholar.google.com/kestrel</a>
+      <a href="#">github.com/akestrel</a>
+      <a href="#">linkedin.com/in/akestrel</a>
+    </div>
+
+    <nav class="tabnav" role="tablist" aria-label="Sections">
+      <button role="tab" aria-selected="true" data-tab="overview" style="--tab-color:var(--amber)"><span class="tick"></span>Overview</button>
+      <button role="tab" aria-selected="false" data-tab="cv" style="--tab-color:var(--crimson)"><span class="tick"></span>CV</button>
+      <button role="tab" aria-selected="false" data-tab="education" style="--tab-color:var(--teal)"><span class="tick"></span>Education</button>
+      <button role="tab" aria-selected="false" data-tab="gallery" style="--tab-color:var(--violet)"><span class="tick"></span>Photo Gallery</button>
+    </nav>
+
+    <div class="sidebar-foot">
+      Dept. of Chemistry<br>
+      Placeholder University<br>
+      Updated Aug 2026
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main>
+
+    <!-- ---------- OVERVIEW ---------- -->
+    <section class="tab-panel active" id="panel-overview">
+      <div class="eyebrow" style="--line-color:var(--amber)">Overview</div>
+      <h2>Recent activity, skills, and selected work.</h2>
+      <p class="panel-sub">A running log of updates alongside a snapshot of what I work on.</p>
+
+      <div class="block">
+        <div class="block-head"><h3>Recent Updates</h3><span class="count">5 entries</span></div>
+        <div class="update-row">
+          <div class="update-date">2026.08.14</div>
+          <div><span class="tag">Instrument</span><p>Ran first low-temperature measurements on the new dilution refrigerator setup.</p></div>
+        </div>
+        <div class="update-row">
+          <div class="update-date">2026.07.02</div>
+          <div><span class="tag">Funding</span><p>Co-authored a successful NSF proposal on strain-tunable charge order.</p></div>
+        </div>
+        <div class="update-row">
+          <div class="update-date">2026.06.10</div>
+          <div><span class="tag">Talk</span><p>Presented a poster at the March Meeting on layered telluride synthesis.</p></div>
+        </div>
+        <div class="update-row">
+          <div class="update-date">2026.04.22</div>
+          <div><span class="tag">Milestone</span><p>Defended dissertation proposal; advanced to candidacy.</p></div>
+        </div>
+        <div class="update-row">
+          <div class="update-date">2026.02.03</div>
+          <div><span class="tag">Publication</span><p>Paper on charge density wave suppression accepted to Physical Review B.</p></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-head"><h3>Skills</h3><span class="count">6 areas</span></div>
+        <div class="skills-grid">
+          <div class="skill-group">
+            <h4>Experimental</h4>
+            <div class="skill-bar"><div class="label"><span>X-ray diffraction</span></div><div class="track"><div class="fill" style="width:90%; --fill-color:var(--teal)"></div></div></div>
+            <div class="skill-bar"><div class="label"><span>Crystal growth (CVT)</span></div><div class="track"><div class="fill" style="width:85%; --fill-color:var(--teal)"></div></div></div>
+            <div class="skill-bar"><div class="label"><span>Low-temp transport</span></div><div class="track"><div class="fill" style="width:75%; --fill-color:var(--teal)"></div></div></div>
+          </div>
+          <div class="skill-group">
+            <h4>Computational</h4>
+            <div class="skill-bar"><div class="label"><span>Python / data analysis</span></div><div class="track"><div class="fill" style="width:92%; --fill-color:var(--violet)"></div></div></div>
+            <div class="skill-bar"><div class="label"><span>DFT (VASP)</span></div><div class="track"><div class="fill" style="width:65%; --fill-color:var(--violet)"></div></div></div>
+            <div class="skill-bar"><div class="label"><span>MATLAB</span></div><div class="track"><div class="fill" style="width:70%; --fill-color:var(--violet)"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-head"><h3>Selected Publications</h3><span class="count">view all on CV</span></div>
+        <div class="pub-compact">
+          <div class="pt">Strain-induced charge density wave suppression in ultrathin TeSb₂</div>
+          <div class="pv">Physical Review B · 2026</div>
+        </div>
+        <div class="pub-compact">
+          <div class="pt">Vapor transport growth of single crystals for magneto-transport studies</div>
+          <div class="pv">Crystal Growth &amp; Design · 2025</div>
+        </div>
+        <div class="pub-compact">
+          <div class="pt">Mapping the phase diagram of pressure-tuned quantum spin liquids</div>
+          <div class="pv">Nature Materials · 2025</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- CV ---------- -->
+    <section class="tab-panel" id="panel-cv">
+      <div class="eyebrow" style="--line-color:var(--crimson)">Curriculum Vitae</div>
+      <h2>Experience, publications, and awards.</h2>
+      <p class="panel-sub">Full CV available as a PDF download.</p>
+      <a href="#" class="cv-download">Download CV (PDF) ↓</a>
+
+      <div class="block">
+        <div class="block-head"><h3>Research Experience</h3></div>
+        <div class="timeline-item">
+          <div class="range">2022 — Present</div>
+          <div>
+            <div class="role-title">Graduate Researcher</div>
+            <div class="org">Placeholder University, Dept. of Chemistry</div>
+            <p>Synthesis and characterization of layered quantum materials under the supervision of Dr. A. Chen; focus on strain- and pressure-tuned phase transitions.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="range">2021 — 2022</div>
+          <div>
+            <div class="role-title">Research Assistant</div>
+            <div class="org">Placeholder National Laboratory</div>
+            <p>Supported beamline experiments for synchrotron X-ray diffraction studies on chalcogenide thin films.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="range">2019 — 2021</div>
+          <div>
+            <div class="role-title">Undergraduate Research Assistant</div>
+            <div class="org">Placeholder Institute of Technology</div>
+            <p>Assisted in crystal growth and basic transport measurements as part of an NSF REU program.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-head"><h3>Awards &amp; Honors</h3></div>
+        <div class="timeline-item">
+          <div class="range">2026</div>
+          <div><div class="role-title">Departmental Travel Award</div><div class="org">Placeholder University</div></div>
+        </div>
+        <div class="timeline-item">
+          <div class="range">2024</div>
+          <div><div class="role-title">Best Poster Award, APS March Meeting</div><div class="org">American Physical Society</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- EDUCATION ---------- -->
+    <section class="tab-panel" id="panel-education">
+      <div class="eyebrow" style="--line-color:var(--teal)">Education</div>
+      <h2>Academic background.</h2>
+      <p class="panel-sub">Degrees, institutions, and areas of focus.</p>
+
+      <div class="edu-item">
+        <div class="range">2022 — Present</div>
+        <div>
+          <div class="degree">PhD, Physical Chemistry</div>
+          <div class="inst">Placeholder University</div>
+          <p>Dissertation: Strain and pressure control of electronic order in layered chalcogenides. Advisor: Dr. A. Chen.</p>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="range">2018 — 2022</div>
+        <div>
+          <div class="degree">BSc, Chemistry (Honors)</div>
+          <div class="inst">Placeholder Institute of Technology</div>
+          <p>Minor in Physics. Senior thesis on vapor transport crystal growth. Graduated summa cum laude.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- GALLERY ---------- -->
+    <section class="tab-panel" id="panel-gallery">
+      <div class="eyebrow" style="--line-color:var(--violet)">Photo Gallery</div>
+      <h2>Lab work, fieldwork, and conferences.</h2>
+      <p class="gallery-note">Placeholder tiles — swap each for your own photos (conference talks, lab work, group photos).</p>
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // Tab switching
+  (function(){
+    const buttons = document.querySelectorAll('.tabnav button');
+    const panels = document.querySelectorAll('.tab-panel');
+    buttons.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        buttons.forEach(b=>b.setAttribute('aria-selected','false'));
+        panels.forEach(p=>p.classList.remove('active'));
+        btn.setAttribute('aria-selected','true');
+        document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+      });
+    });
+  })();
+
+  // Generate SVG placeholder tiles for the gallery
+  (function(){
+    const grid = document.getElementById('galleryGrid');
+    const ink = '#16202A', paper='#F5F6F2';
+    const accents = ['#F5A623','#D64550','#2FB6B2','#7C5CBF'];
+
+    function svgWrap(inner){ return `<svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice">${inner}</svg>`; }
+
+    let rings = `<rect width="300" height="200" fill="${paper}"/>`;
+    for(let r=8;r<140;r+=13){
+      rings += `<circle cx="150" cy="100" r="${r}" fill="none" stroke="${ink}" stroke-width="${r%26<13?1:2}" opacity="${0.15+ (r%39)/140}"/>`;
+    }
+    rings += `<circle cx="150" cy="100" r="3" fill="${accents[1]}"/>`;
+
+    let lattice = `<rect width="300" height="200" fill="${paper}"/>`;
+    for(let x=10;x<300;x+=28){
+      for(let y=10;y<200;y+=28){
+        const off = (Math.round(y/28)%2)*14;
+        lattice += `<circle cx="${x+off}" cy="${y}" r="3.5" fill="${ink}" opacity="0.55"/>`;
+      }
+    }
+    lattice += `<line x1="38" y1="38" x2="66" y2="66" stroke="${accents[2]}" stroke-width="2"/>`;
+
+    let wave = `<rect width="300" height="200" fill="${ink}"/>`;
+    let path = 'M0,100';
+    for(let x=0;x<=300;x+=6){
+      const y = 100 + Math.sin(x/14)*40*Math.exp(-x/420) + (Math.random()-0.5)*4;
+      path += ` L${x},${y.toFixed(1)}`;
+    }
+    wave += `<path d="${path}" fill="none" stroke="${accents[2]}" stroke-width="2"/>`;
+    for(let gx=0;gx<300;gx+=30) wave += `<line x1="${gx}" y1="0" x2="${gx}" y2="200" stroke="${paper}" stroke-width="0.5" opacity="0.15"/>`;
+
+    let mol = `<rect width="300" height="200" fill="${paper}"/>`;
+    const pts = [[80,70],[150,50],[210,90],[170,140],[100,140],[60,110]];
+    mol += `<polyline points="${pts.map(p=>p.join(',')).join(' ')} ${pts[0].join(',')}" fill="none" stroke="${ink}" stroke-width="2" opacity="0.5"/>`;
+    pts.forEach((p,i)=>{ mol += `<circle cx="${p[0]}" cy="${p[1]}" r="10" fill="${accents[i%accents.length]}"/>`; });
+
+    let phase = `<rect width="300" height="200" fill="${paper}"/>`;
+    phase += `<line x1="30" y1="170" x2="30" y2="20" stroke="${ink}" stroke-width="1.5"/>`;
+    phase += `<line x1="30" y1="170" x2="280" y2="170" stroke="${ink}" stroke-width="1.5"/>`;
+    phase += `<path d="M30,170 C90,150 110,60 160,50 C210,42 240,90 280,80" fill="none" stroke="${accents[3]}" stroke-width="2.5"/>`;
+
+    let tracks = `<rect width="300" height="200" fill="${ink}"/>`;
+    for(let i=0;i<9;i++){
+      const x1 = Math.random()*300, y1 = Math.random()*200;
+      const x2 = x1 + (Math.random()-0.5)*180, y2 = y1 + (Math.random()-0.5)*120;
+      tracks += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${accents[i%accents.length]}" stroke-width="1.2" opacity="0.75"/>`;
+    }
+
+    const tiles = [
+      {cls:'g1', svg:rings, cap:'XRD pattern, sample K-114'},
+      {cls:'g2', svg:mol, cap:'Structure model, unit cell'},
+      {cls:'g3', svg:wave, cap:'Transport run 08'},
+      {cls:'g4', svg:lattice, cap:'Lattice schematic'},
+      {cls:'g5', svg:phase, cap:'Phase diagram'},
+      {cls:'g6', svg:tracks, cap:'Conference poster session'},
+    ];
+
+    tiles.forEach(t=>{
+      const div = document.createElement('div');
+      div.className = 'gtile ' + t.cls;
+      div.innerHTML = svgWrap(t.svg) + `<div class="cap">${t.cap}</div>`;
+      grid.appendChild(div);
+    });
+  })();
+</script>
+
+</body>
+</html>
