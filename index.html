@@ -39,31 +39,32 @@
   a{color:inherit;}
   ::selection{background:var(--amber); color:var(--ink);}
 
-  .shell{
-    display:grid;
-    grid-template-columns:var(--sidebar-w) 1fr;
-    min-height:100vh;
+    .shell{
+    max-width:1100px;
+    margin:0 auto;
+    padding:0 clamp(1.5rem, 5vw, 3rem);
   }
 
-  /* ---------- SIDEBAR ---------- */
-  .sidebar{
-    position:sticky;
-    top:0;
-    height:100vh;
-    border-right:1px solid var(--rule);
-    padding:2.75rem 2rem;
+  /* ---------- HEADER ---------- */
+  .header-row{
     display:flex;
-    flex-direction:column;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:2.5rem;
+    padding:3rem 0 2rem;
+    border-bottom:1px solid var(--rule);
+    flex-wrap:wrap;
   }
-
-  .sidebar h1{
+  .header-left{flex:1; min-width:240px;}
+  .header-right{display:flex; flex-direction:column; align-items:flex-end;}
+    .header-left h1{{
     font-family:var(--serif);
     font-size:1.6rem;
     font-weight:600;
     line-height:1.2;
     margin-bottom:0.3rem;
   }
-  .sidebar .role{
+  .header-left .role{
     font-size:0.86rem;
     color:var(--ink-soft);
     margin-bottom:1.5rem;
@@ -101,17 +102,15 @@
     object-fit:cover;
     display:block;
   }
-
+ 
   .contact-list{
     display:flex;
-    flex-direction:column;
-    gap:0.45rem;
+    flex-direction:row;
+    flex-wrap:wrap;
+    gap:0.4rem 1.25rem;
     font-family:var(--mono);
     font-size:0.76rem;
     color:var(--ink-soft);
-    margin-bottom:2.25rem;
-    padding-bottom:2.25rem;
-    border-bottom:1px solid var(--rule);
   }
   .contact-list a{
     text-decoration:none;
@@ -121,22 +120,20 @@
   .contact-list a:hover{color:var(--ink); border-color:var(--ink);}
 
   /* Tab nav styled as spectral lines, consistent with lab site language */
-  .tabnav{
+    .tabnav{
     display:flex;
-    flex-direction:column;
-    gap:0;
-    flex:1;
+    flex-direction:row;
+    gap:0.5rem;
+    padding:1rem 0 0;
   }
   .tabnav button{
     all:unset;
     cursor:pointer;
     display:flex;
     align-items:center;
-    gap:0.85rem;
-    padding:0.85rem 0;
-    padding-left:0.9rem;
-    margin-left:-0.9rem;
-    border-left:3px solid transparent;
+    gap:0.6rem;
+    padding:0.7rem 1rem;
+    border-bottom:3px solid transparent;
     font-family:var(--mono);
     font-size:0.8rem;
     letter-spacing:0.02em;
@@ -144,16 +141,15 @@
     transition:color 0.2s ease, border-color 0.2s ease;
   }
   .tabnav button .tick{
-    width:2px; height:20px;
+    width:16px; height:2px;
     background:var(--rule);
     flex-shrink:0;
-    transition:background 0.2s ease, height 0.2s ease;
+    transition:background 0.2s ease;
   }
   .tabnav button:hover{color:var(--ink);}
-  .tabnav button[aria-selected="true"]{color:var(--ink);}
-  .tabnav button[aria-selected="true"]{border-left-color:var(--tab-color, var(--amber));}
-  .tabnav button[aria-selected="true"] .tick{background:var(--tab-color, var(--amber)); height:28px;}
-
+  .tabnav button[aria-selected="true"]{color:var(--ink); border-bottom-color:var(--tab-color, var(--amber));}
+  .tabnav button[aria-selected="true"] .tick{background:var(--tab-color, var(--amber));}
+  
   .sidebar-foot{
     font-family:var(--mono);
     font-size:0.68rem;
@@ -164,8 +160,8 @@
   }
 
   /* ---------- MAIN CONTENT ---------- */
-  main{
-    padding:3.5rem clamp(1.5rem, 5vw, 4.5rem) 5rem;
+    main{
+    padding:2.5rem 0 5rem;
     min-width:0;
   }
 
@@ -356,25 +352,12 @@
   .g6{grid-column:span 2;}
 
   /* ---------- Mobile ---------- */
-  @media (max-width: 860px){
-    .shell{grid-template-columns:1fr;}
-    .sidebar{
-      position:sticky; top:0; height:auto;
-      flex-direction:row; align-items:center;
-      border-right:none; border-bottom:1px solid var(--rule);
-      padding:0.85rem 1.25rem; background:var(--paper); z-index:10;
-      gap:0.85rem;
-    }
-    .sidebar h1{order:2; font-size:1rem; margin-bottom:0;}
-    .photo{order:1; width:44px; aspect-ratio:35/45; margin-bottom:0; flex-shrink:0;}
-    .photo .initials{font-size:1rem;}
-    .sidebar .role, .contact-list, .sidebar-foot{display:none;}
-    .tabnav{order:3;}
-    .tabnav{flex-direction:row; overflow-x:auto; gap:0.25rem; flex:1;}
-    .tabnav button{padding:0.4rem 0.7rem; border-left:none; border-bottom:3px solid transparent; margin-left:0; white-space:nowrap;}
-    .tabnav button .tick{width:14px; height:2px;}
-    .tabnav button[aria-selected="true"]{border-left-color:transparent; border-bottom-color:var(--tab-color, var(--amber));}
-    main{padding:2rem 1.25rem 3rem;}
+    @media (max-width: 860px){
+    .header-row{padding:1.5rem 0 1rem; gap:1.25rem;}
+    .header-right{align-items:flex-start;}
+    .photo{width:100px;}
+    .tabnav{overflow-x:auto;}
+    main{padding:1.5rem 0 3rem;}
     .skills-grid{grid-template-columns:1fr;}
     .update-row, .timeline-item, .edu-item{grid-template-columns:1fr; gap:0.4rem;}
     .gallery-grid{grid-template-columns:repeat(2,1fr);}
@@ -384,41 +367,33 @@
 </head>
 <body>
 
-<div class="shell">
+///////
+  <div class="shell">
 
-  <!-- ============ SIDEBAR ============ -->
-  <aside class="sidebar">
-    <h1>Md Zawad Hossain</h1>
-    <div class="role">PhD Candidate, <br> Electrical and Computer Engineering <br>MS, Chemistry<!--<br>Placeholder University--></div>
-    
-  <!-- Swap the div below for: <div class="photo"><img src="your-photo.jpg" alt="Alex Kestrel"></div> -->
-<div class="photo"><div class="initials">AK</div></div>
-<!-- Replace cv.pdf with the filename of your uploaded CV PDF -->
-<a href="cv.pdf" target="_blank" rel="noopener" class="photo-cv-link">View CV (PDF) ↓</a>
-    
-    <div class="contact-list">
-      <a href="mailto:mxhossain36@shockers.wichita.edu">Email</a>
-      <a href="https://scholar.google.com/citations?hl=en&user=VEr_dnwAAAAJ">Google scholar</a>
-      <!--<a href="#">github.com/akestrel</a>-->
-      <a href="www.linkedin.com/in/md-zawad-hossain">Linkedin</a>
+  <!-- ============ HEADER ============ -->
+  <div class="header-row">
+    <div class="header-left">
+      <h1>YOUR NAME</h1>
+      <div class="role">YOUR TITLE</div>
+      <div class="contact-list">
+        YOUR CONTACT LINKS
+      </div>
     </div>
-
-    <nav class="tabnav" role="tablist" aria-label="Sections">
-      <button role="tab" aria-selected="true" data-tab="overview" style="--tab-color:var(--amber)"><span class="tick"></span>Overview</button>
-      <button role="tab" aria-selected="false" data-tab="cv" style="--tab-color:var(--crimson)"><span class="tick"></span>CV</button>
-      <button role="tab" aria-selected="false" data-tab="education" style="--tab-color:var(--teal)"><span class="tick"></span>Education</button>
-      <button role="tab" aria-selected="false" data-tab="gallery" style="--tab-color:var(--violet)"><span class="tick"></span>Photo Gallery</button>
-    </nav>
-
-    <div class="sidebar-foot">
-      Dept. of Chemistry<br>
-      Placeholder University<br>
-      Updated Aug 2026
+    <div class="header-right">
+      <!-- Swap the div below for: <div class="photo"><img src="your-photo.jpg" alt="..."></div> -->
+      <div class="photo"><div class="initials">AK</div></div>
+      <!-- Replace cv.pdf with the filename of your uploaded CV PDF -->
+      <a href="cv.pdf" target="_blank" rel="noopener" class="photo-cv-link">View CV (PDF) ↓</a>
     </div>
-  </aside>
+  </div>
+
+  <nav class="tabnav" role="tablist" aria-label="Sections">
+    YOUR TAB BUTTONS
+  </nav>
 
   <!-- ============ MAIN ============ -->
   <main>
+    //////
 
     <!-- ---------- OVERVIEW ---------- -->
     <section class="tab-panel active" id="panel-overview">
